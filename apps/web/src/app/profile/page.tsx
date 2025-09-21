@@ -13,6 +13,9 @@ export default function Dashboard() {
 	const user = useUser();
 	const privateData = useQuery(api.privateData.get);
 
+
+	const usersConvex = useQuery(api.user.getUsers);
+
 	return (
 		<>
 			<Authenticated>
@@ -29,6 +32,9 @@ export default function Dashboard() {
 			<AuthLoading>
 				<div>Loading...</div>
 			</AuthLoading>
+
+			
+
 		</>
 	);
 }
