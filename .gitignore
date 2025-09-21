@@ -3,4 +3,3 @@ node_modules
 .alchemy
 .env
 
-packages/backend/convex/_generated/
