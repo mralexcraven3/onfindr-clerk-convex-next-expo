@@ -4,7 +4,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import SubmitBusinessForm, { SubmitBusinessFormData } from '@/components/SubmitBusinessForm';
+import { type SubmitBusinessFormData } from '@/types/submitBusiness';
+import SubmitBusinessForm from '@/components/SubmitBusinessForm';
 
 export default function SubmitBusinessPage() {
   const router = useRouter();
