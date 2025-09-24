@@ -2,13 +2,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { type SubmitBusinessFormData } from '@/types/submitBusiness';
 import SubmitBusinessForm from '@/components/SubmitBusinessForm';
 
 export default function SubmitBusinessPage() {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (data: SubmitBusinessFormData) => {
@@ -23,23 +21,25 @@ export default function SubmitBusinessPage() {
         body: JSON.stringify(data),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to submit business information');
+        const errorMessage = result.errors 
+          ? Object.values(result.errors).join('; ') 
+          : result.message || 'Failed to submit business information';
+        throw new Error(errorMessage);
       }
 
-      const result = await response.json();
-      console.log('Business information submitted:', result);
+      console.log('Business submitted:', result.data);
+      toast.success(result.message || 'Business submitted successfully!');
       
-      toast.success('Business information submitted successfully!');
-      
-      // Optionally redirect or reset form
-      // router.push('/submit-business/success');
+      // Optional: Reset form or redirect
+      // form.reset();
       
     } catch (error) {
-      console.error('Error submitting business information:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to submit information');
-      throw error;
+      console.error('Submission error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Submission failed. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -47,12 +47,9 @@ export default function SubmitBusinessPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4">
-        <div className="py-8">
-          <SubmitBusinessForm 
-            onSubmit={handleSubmit} 
-            isLoading={isSubmitting}
-          />
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <SubmitBusinessForm onSubmit={handleSubmit} isLoading={isSubmitting} />
         </div>
       </div>
     </div>
