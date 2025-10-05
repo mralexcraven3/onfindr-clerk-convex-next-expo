@@ -1,3 +1,11 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@clerk/shared'
+  - '@tailwindcss/oxide'
+  - browser-tabs-lock
+  - core-js
+  - esbuild
+  - sharp
