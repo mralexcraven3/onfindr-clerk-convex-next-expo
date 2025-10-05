@@ -8,11 +8,24 @@ import {
 	Unauthenticated,
 	useQuery,
 } from "convex/react";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
 
 export default function UserAdmin() {
 	const user = useUser();
 
 	const businessesConvex = useQuery(api.business.getBusinesses);
+	
+	// Return businesses as cards
+	// const businessesCards = businessesConvex?.map((business) => (
+	// 	<Card key={business._id}>
+	// 		<CardHeader>
+	// 			<CardTitle>{business.name}</CardTitle>
+	// 		</CardHeader>
+	// 	</Card>
+	// ));
+
 
 	return (
 		<>
@@ -20,18 +33,17 @@ export default function UserAdmin() {
 							<h1>Businessses</h1>
 			
 							{businessesConvex?.map((business) => (
-									<ul key={business._id}>
-
-									
-											<li
-												key={business._id}
-												className=""
-											>
-													<p>
+									<Card key={business._id}>											
+													<CardHeader>
 														{business.name}
-													</p>
-											</li>
-										</ul>
+													</CardHeader>
+													<CardDescription>	
+														{business.description}
+													</CardDescription>
+													<CardFooter>
+														<Button>View</Button>
+													</CardFooter>
+										</Card>
 									))}
 					</div>
 		</>
