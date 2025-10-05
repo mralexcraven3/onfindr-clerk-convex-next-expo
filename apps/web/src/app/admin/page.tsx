@@ -17,6 +17,9 @@ export default function Admin() {
     const healthCheck = useQuery(api.healthCheck.get);
 	const usersConvex = useQuery(api.user.getUsers);
 
+	console.log(user);
+
+
 	return (
 		<>
         <div className="">
