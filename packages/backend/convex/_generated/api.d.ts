@@ -16,6 +16,7 @@ import type {
 import type * as business from "../business.js";
 import type * as healthCheck from "../healthCheck.js";
 import type * as privateData from "../privateData.js";
+import type * as submittedBusinesses from "../submittedBusinesses.js";
 import type * as user from "../user.js";
 
 /**
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   business: typeof business;
   healthCheck: typeof healthCheck;
   privateData: typeof privateData;
+  submittedBusinesses: typeof submittedBusinesses;
   user: typeof user;
 }>;
 export declare const api: FilterApi<
