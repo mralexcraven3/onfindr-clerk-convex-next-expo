@@ -1,7 +1,7 @@
 // components/SubmitBusinessForm.tsx
 'use client';
 
-import React, { useState, useTransition, useCallback } from 'react';
+import React, { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -40,9 +40,8 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
 }) => {
   const [isPending, startTransition] = useTransition();
 
-  // Initialize form with resolver and default values
   const form = useForm<SubmitBusinessFormData>({
-    resolver: zodResolver(SubmitBusinessFormSchema),
+    resolver: zodResolver(SubmitBusinessFormSchema as any),
     defaultValues: {
       ...defaultSubmitBusinessFormData,
       ...initialData,
@@ -54,14 +53,12 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
 
     startTransition(async () => {
       try {
-        // Format data before submission
         const submitData: SubmitBusinessFormData = {
-          ...data,
           name: data.name.trim(),
           description: data.description.trim(),
           email: data.email.trim(),
-          openingTime: data.openingTime ? data.openingTime.trim() : '',
-          closingTime: data.closingTime ? data.closingTime.trim() : '',
+          openingTime: data.openingTime?.trim() || '',
+          closingTime: data.closingTime?.trim() || '',
         };
         
         await onSubmit(submitData);
@@ -74,7 +71,6 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
     });
   };
 
-  // Check if required fields are valid
   const isFormValid = form.formState.isValid &&
     Boolean(form.getValues('name')?.trim()) &&
     Boolean(form.getValues('description')?.trim()) &&
@@ -86,11 +82,11 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
         <CardHeader className="space-y-1">
           <div className="flex items-center space-x-2 mb-4">
             <Building2 className="h-8 w-8 text-primary" />
-            <CardTitle className="text-2xl">Submit Your Business</CardTitle>
+            <CardTitle className="text-2xl font-bold">Submit Your Business</CardTitle>
           </div>
           <CardDescription>
-            Share your business details to get featured in our directory.{' '}
-            <span className="font-medium">Business name, description, and email are required.</span>
+            Get featured in our business directory.{' '}
+            <span className="font-semibold">Name, description, and email are required.</span>
           </CardDescription>
         </CardHeader>
 
@@ -111,18 +107,18 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        type="text"
-                        placeholder="Enter your business name (e.g., ABC Trading Ltd)"
-                        {...field}
+                        placeholder="e.g., ABC Trading Ltd, Smith & Sons Bakery"
                         className={cn(
-                          'transition-colors',
-                          form.formState.errors.name && 'border-destructive focus-visible:ring-destructive',
+                          'transition-colors focus-visible:ring-primary',
+                          form.formState.errors.name && 
+                          'border-destructive focus-visible:ring-destructive'
                         )}
+                        {...field}
                         required
                       />
                     </FormControl>
-                    <FormDescription>
-                      The legal name of your business as registered (required, max 100 characters)
+                    <FormDescription className="text-sm">
+                      Enter your full business name (required, max 100 characters)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -143,17 +139,18 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Tell us about your business, services, and what makes you unique. Include what you offer, your target customers, and your unique selling points..."
+                        placeholder="Tell us about your business - what you do, who you serve, what makes you unique. Include services offered, location, and any special features..."
                         className={cn(
                           'min-h-[120px] resize-none transition-colors',
-                          form.formState.errors.description && 'border-destructive focus-visible:ring-destructive',
+                          form.formState.errors.description && 
+                          'border-destructive focus-visible:ring-destructive'
                         )}
                         {...field}
                         required
                       />
                     </FormControl>
-                    <FormDescription>
-                      Provide a detailed description of your business (required, 10-500 characters)
+                    <FormDescription className="text-sm">
+                      Describe your business in detail (required, 10-500 characters)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -177,18 +174,19 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="business@example.com"
-                        {...field}
-                        onChange={(e) => field.onChange(e.target.value.trim())}
+                        placeholder="contact@yourbusiness.com"
                         className={cn(
                           'transition-colors',
-                          form.formState.errors.email && 'border-destructive focus-visible:ring-destructive',
+                          form.formState.errors.email && 
+                          'border-destructive focus-visible:ring-destructive'
                         )}
+                        {...field}
+                        onChange={(e) => field.onChange(e.target.value.trim())}
                         required
                       />
                     </FormControl>
-                    <FormDescription>
-                      Your primary business email address for verification and communication (required)
+                    <FormDescription className="text-sm">
+                      Where we can contact you for verification and updates (required)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -198,36 +196,39 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
               <Separator className="my-6" />
 
               {/* Operating Hours - OPTIONAL */}
-              <div>
-                <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
-                  <Clock className="h-5 w-5 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold">Operating Hours (Optional)</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 pb-2 border-b border-border">
+                  <Clock className="h-5 w-5 flex-shrink-0" />
+                  <h3 className="text-lg font-semibold">Operating Hours</h3>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Help customers find you at the right time. These can be updated later.
+                
+                <p className="text-sm text-muted-foreground">
+                  Help customers know when you're available. These can be updated later.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="openingTime"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
+                      <FormItem className="flex flex-col">
+                        <FormLabel className="flex items-center gap-2 mb-1">
+                          <Clock className="h-3 w-3" />
                           Opening Time
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="time"
-                            {...field}
                             className={cn(
-                              'h-10 transition-colors',
-                              form.formState.errors.openingTime && 'border-destructive focus-visible:ring-destructive',
+                              'h-10',
+                              form.formState.errors.openingTime && 
+                              'border-destructive focus-visible:ring-destructive'
                             )}
+                            {...field}
                           />
                         </FormControl>
-                        <FormDescription className="text-sm">
-                          Standard opening time (24-hour format: 09:00 = 9:00 AM)
+                        <FormDescription className="text-xs mt-1">
+                          Typical opening hour (24-hour format)
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -238,31 +239,33 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
                     control={form.control}
                     name="closingTime"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
+                      <FormItem className="flex flex-col">
+                        <FormLabel className="flex items-center gap-2 mb-1">
+                          <Clock className="h-3 w-3" />
                           Closing Time
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="time"
-                            {...field}
                             className={cn(
-                              'h-10 transition-colors',
-                              form.formState.errors.closingTime && 'border-destructive focus-visible:ring-destructive',
+                              'h-10',
+                              form.formState.errors.closingTime && 
+                              'border-destructive focus-visible:ring-destructive'
                             )}
+                            {...field}
                           />
                         </FormControl>
-                        <FormDescription className="text-sm">
-                          Standard closing time (24-hour format: 17:00 = 5:00 PM)
+                        <FormDescription className="text-xs mt-1">
+                          Typical closing hour (24-hour format)
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground mt-3">
-                  These hours help customers plan their visits. Leave blank if you operate 24/7 or have variable hours.
+
+                <p className="text-xs text-muted-foreground text-center">
+                  <span className="font-medium">Optional:</span> Leave blank if you operate 24/7 or have variable hours
                 </p>
               </div>
 
@@ -272,29 +275,61 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
                   type="submit"
                   disabled={isPending || isLoading || !isFormValid}
                   className={cn(
-                    'w-full max-w-md transition-all duration-200 ease-in-out',
+                    'w-full max-w-sm px-8 py-3 text-base',
+                    'transition-all duration-200 ease-in-out',
                     isFormValid
-                      ? 'bg-primary hover:bg-primary/90 shadow-md hover:shadow-lg hover:-translate-y-0.5'
-                      : 'opacity-50 cursor-not-allowed bg-gray-400 hover:bg-gray-400',
+                      ? 'bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform'
+                      : 'opacity-50 cursor-not-allowed bg-gray-400 hover:bg-gray-400'
                   )}
                   size="lg"
                 >
                   {isPending || isLoading ? (
                     <>
                       <Clock className="mr-2 h-4 w-4 animate-spin" />
-                      Processing...
+                      Submitting...
                     </>
                   ) : (
                     <>
                       <Building2 className="mr-2 h-4 w-4" />
-                      Submit Business
+                      Submit Business Listing
                     </>
                   )}
                 </Button>
               </div>
 
-              {/* Field Requirements Summary */}
-              
+              {/* Requirements Summary */}
+              <div className="pt-6">
+                <div className="bg-gradient-to-r from-muted/50 to-background rounded-lg p-4 border">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <h4 className="text-sm font-medium text-muted-foreground">
+                      What we need from you
+                    </h4>
+                  </div>
+                  <div className="text-xs space-y-1 text-center">
+                    <p className="font-medium">
+                      <span className="text-destructive">Required</span> ({' '}
+                      <span className="text-sm font-normal">3 fields</span>
+                      {')'} {/* ✅ Fixed: just the closing parenthesis */}
+                    </p>
+                    <div className="text-muted-foreground flex flex-col sm:flex-row gap-2 justify-center text-[10px] sm:text-xs">
+                      <span>• Business Name</span>
+                      <span>• Description</span>
+                      <span>• Email Address</span>
+                    </div>
+                    <div className="pt-2 mt-2 border-t border-border">
+                      <p className="font-medium text-muted-foreground">
+                        <span className="text-foreground">Optional</span> ({' '}
+                        <span className="text-sm font-normal">1 section</span>
+                        {')'} {/* ✅ Fixed: just the closing parenthesis */}
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">
+                        • Operating Hours
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </form>
           </Form>
         </CardContent>
