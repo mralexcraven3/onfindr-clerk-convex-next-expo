@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { type SubmitBusinessFormData } from '@/types/submitBusiness';
-import SubmitBusinessForm from '@/components/SubmitBusinessForm';
+import SubmitBusinessForm from '@/components/SubmitBusinessForm2';
 
 export default function SubmitBusinessPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +49,7 @@ export default function SubmitBusinessPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <SubmitBusinessForm onSubmit={handleSubmit} isLoading={isSubmitting} />
+          <SubmitBusinessForm  />
         </div>
       </div>
     </div>
