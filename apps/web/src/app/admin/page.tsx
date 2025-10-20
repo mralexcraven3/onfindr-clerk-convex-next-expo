@@ -30,15 +30,7 @@ export default function Admin() {
 					<p>privateData: {privateData?.message}</p>
 					<UserButton />
 				</div>
-			</Authenticated>
-			<Unauthenticated>
-				<SignInButton />
-			</Unauthenticated>
-			<AuthLoading>
-				<div>Loading...</div>
-			</AuthLoading>
-
-			<div className="grid gap-6">
+				<div className="grid gap-6">
 				<section className="rounded-lg border p-4">
 					<h2 className="mb-2 font-medium">API Status</h2>
 					<div className="flex items-center gap-2">
@@ -54,7 +46,16 @@ export default function Admin() {
 						</span>
 					</div>
 				</section>
-			</div>
+				</div>
+			</Authenticated>
+			<Unauthenticated>
+				<SignInButton />
+			</Unauthenticated>
+			<AuthLoading>
+				<div>Loading...</div>
+			</AuthLoading>
+
+			
         
         </div>
 		</>
