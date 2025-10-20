@@ -57,6 +57,9 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
           name: data.name.trim(),
           description: data.description.trim(),
           email: data.email.trim(),
+          address: data.address?.trim() || '',
+          phone: data.phone?.trim() || '',
+          website: data.website?.trim() || '',
           openingTime: data.openingTime?.trim() || '',
           closingTime: data.closingTime?.trim() || '',
         };
@@ -309,13 +312,14 @@ const SubmitBusinessForm: React.FC<SubmitBusinessFormProps> = ({
                   <div className="text-xs space-y-1 text-center">
                     <p className="font-medium">
                       <span className="text-destructive">Required</span> ({' '}
-                      <span className="text-sm font-normal">3 fields</span>
-                      {')'} {/* ✅ Fixed: just the closing parenthesis */}
+                      <span className="text-sm font-normal">4 fields</span>
+                      {')'}
                     </p>
                     <div className="text-muted-foreground flex flex-col sm:flex-row gap-2 justify-center text-[10px] sm:text-xs">
                       <span>• Business Name</span>
                       <span>• Description</span>
                       <span>• Email Address</span>
+                      <span>• Address</span>
                     </div>
                     <div className="pt-2 mt-2 border-t border-border">
                       <p className="font-medium text-muted-foreground">
