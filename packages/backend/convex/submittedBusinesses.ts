@@ -13,7 +13,7 @@ export const addSubmittedBusiness = mutation({
         business: v.object({
             name: v.string(),
             email: v.string(),
-            description: v.optional(v.string()),
+            description: v.string(),
             address: v.optional(v.string()),
             phone: v.optional(v.string()),
             openingTime: v.optional(v.string()),
