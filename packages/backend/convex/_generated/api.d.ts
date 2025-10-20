@@ -18,6 +18,7 @@ import type * as healthCheck from "../healthCheck.js";
 import type * as privateData from "../privateData.js";
 import type * as submittedBusinesses from "../submittedBusinesses.js";
 import type * as user from "../user.js";
+import type * as waitlist from "../waitlist.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -33,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   privateData: typeof privateData;
   submittedBusinesses: typeof submittedBusinesses;
   user: typeof user;
+  waitlist: typeof waitlist;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
