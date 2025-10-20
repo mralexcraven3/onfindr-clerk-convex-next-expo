@@ -25,6 +25,24 @@ const baseSchema = z.object({
     .min(1, 'Email is required')
     .email('Please enter a valid email address'),
   
+  address: z.string()
+    .min(1, 'Address is required')
+    .max(500, 'Address cannot exceed 500 characters')
+    .refine((val) => {
+      const trimmed = val.trim();
+      return trimmed.length >= 5 && trimmed !== '';
+    }, 'Address must be at least 5 characters and not empty'),
+  
+  phone: z.string()
+    .max(20, 'Phone number cannot exceed 20 characters')
+    .optional()
+    .or(z.literal('')),
+  
+  website: z.string()
+    .url('Please enter a valid website URL')
+    .optional()
+    .or(z.literal('')),
+  
   openingTime: z.string()
     .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Please enter opening time in HH:MM format (24-hour)')
     .optional()
@@ -44,6 +62,9 @@ export const SubmitBusinessFormSchema = baseSchema
       name: typeof val.name === 'string' ? val.name.trim() : '',
       description: typeof val.description === 'string' ? val.description.trim() : '',
       email: typeof val.email === 'string' ? val.email.trim() : '',
+      address: typeof val.address === 'string' ? val.address.trim() : '',
+      phone: typeof val.phone === 'string' ? val.phone.trim() : '',
+      website: typeof val.website === 'string' ? val.website.trim() : '',
       openingTime: typeof val.openingTime === 'string' ? val.openingTime.trim() : '',
       closingTime: typeof val.closingTime === 'string' ? val.closingTime.trim() : '',
     };
